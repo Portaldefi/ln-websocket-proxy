@@ -29,7 +29,7 @@ FROM debian:bullseye-slim
 
 # Some general ENVs
 ENV RUST_LOG=debug
-ENV LN_PROXY_PORT=8080
+ENV LN_PROXY_PORT=3001
 
 # Run as "app" user
 RUN useradd -ms /bin/bash app
