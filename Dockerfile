@@ -1,4 +1,5 @@
-FROM rustlang/rust:nightly as builder
+# FROM rustlang/rust:nightly as builder
+FROM rust:1.78.0-buster as builder
 
 # Make a fake Rust app to keep a cached layer of compiled crates
 RUN USER=root cargo new app
