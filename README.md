@@ -1,56 +1,68 @@
 # ln-websocket-proxy
 
-Websocket-based proxy for connecting to lightning nodes and mutiny wallets.
+A WebSocket-based proxy for connecting to Lightning nodes and Mutiny wallets.
 
-### Docker
+## Docker
 
-Build the websocket-tcp-proxy image
+### Build the WebSocket-TCP Proxy Image
+
+To build the Docker image, run:
 
 ```
 DOCKER_BUILDKIT=1 docker build -f Dockerfile -t mutinywallet/ln-websocket-proxy .
 ```
 
-Run the docker image locally
+### Run the Docker Image Locally
+
+To run the image locally on your machine, use the following command:
 
 ```
 docker run -d -p 3001:3001 mutinywallet/ln-websocket-proxy
 ```
 
-Deploy the docker image:
+### Deploy the Docker Image
+
+To deploy the image to a registry, tag and push it:
 
 ```
 docker tag mutinywallet/ln-websocket-proxy registry.digitalocean.com/mutiny-wallet/websocket-tcp-proxy
 docker push registry.digitalocean.com/mutiny-wallet/websocket-tcp-proxy
 ```
 
-## How to test
+## How to Test
 
-You can change default port by setting `LN_PROXY_PORT=3001` or whatever your port should be.
+You can change the default port by setting `LN_PROXY_PORT=3001` or whatever your desired port is.
 
-You'll want `netcat` and [`websocat`](https://github.com/vi/websocat) installed.
+To test the WebSocket connection, you'll need `netcat` and [`websocat`](https://github.com/vi/websocat) installed.
 
-Terminal 1:
+### Terminal 1: Run the WebSocket Server
+
+Run the WebSocket server with the following command:
 
 ```
 RUST_LOG=debug LN_PROXY_PORT=3002 cargo run --features="server"
 ```
 
-Terminal 2:
+### Terminal 2: Start `netcat`
 
-mac
+For macOS:
+
 ```
 netcat -l 127.0.0.1 -p 3000
 ```
 
-linux
+For Linux:
+
 ```
 nc -l 127.0.0.1 3000
 ```
 
-Terminal 3:
+### Terminal 3: Connect with `websocat`
+
+Run `websocat` to connect to the WebSocket proxy:
 
 ```
 websocat -b ws://127.0.0.1:3001/v1/127_0_0_1/3000
 ```
 
-Now you can type in the `websocat` terminal and you should see text on the netcat terminal, and type in the `netcat` terminal and it should show in the websocat terminal.
+Now, you can type in the `websocat` terminal, and the text will appear in the `netcat` terminal. Similarly, typing in the `netcat` terminal will show the text in the `websocat` terminal.
